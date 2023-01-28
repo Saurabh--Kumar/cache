@@ -7,21 +7,22 @@ import com.saurabh.cache.exception.CacheInitialisationException;
 import java.util.HashMap;
 
 /*
-* Cache uses least recently used eviction policy
-* */
-public class LRUCache <K,V> extends TimeBasedEvictionCache<K,V> {
+ * Cache uses most recently used eviction policy
+ * */
+public class MRUCache <K,V> extends TimeBasedEvictionCache<K,V> {
 
-    public LRUCache(Integer size) throws CacheInitialisationException {
+
+    public MRUCache(Integer size) throws CacheInitialisationException {
         super(size);
     }
 
     @Override
     protected void removeElement() {
-        ListNode<K,V> node = end;
-        end = end.getPrevious();
-        node.setPrevious(null);
-        if(end != null) {
-            end.setNext(null);
+        ListNode<K,V> node = start;
+        start = start.getNext();
+        node.setNext(null);
+        if(start != null) {
+            start.setPrevious(null);
         }
         valueNodePointerMap.remove(node.getKey());
         currentSize-=1;
